@@ -17,7 +17,7 @@
 
 #include <X11/Xlib.h>
 
-char *tzutc = "UTC";
+char *tzmut = "Indian/Mauritius";
 
 static Display *dpy;
 
@@ -190,7 +190,7 @@ int main(void) {
 
 	for (;;sleep(30)) {
 		bat = getbattery("/sys/class/power_supply/BAT1");
-		tmutc = mktimes("%H:%M", tzutc);
+		tmutc = mktimes("%H:%M", tzmut);
 
 		status = smprintf("B:%s U:%s", bat, tmutc);
 		setstatus(status);
