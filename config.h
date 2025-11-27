@@ -1,5 +1,7 @@
 /* See LICENSE file for copyright and license details. */
 
+#include <X11/XF86keysym.h>
+
 /* appearance */
 static const unsigned int borderpx  = 2;        /* border pixel of windows */
 static const unsigned int gappx     = 5;        /* gaps between windows */
@@ -78,14 +80,28 @@ static const char *termcmd[]  = { "kitty", NULL };
 static const char *browser[]  = { "firefox", NULL };
 static const char *spotify[]  = { "spotify", NULL };
 
-static const char *screenshotfull[]     = { "gscreenshot-cli", "--clip", "--notify", "--filename", "$(xdg-data-dir PICTURES)/Screenshots/$(date + '%Y%m%d%H%M%s'.png)",                 NULL };
-static const char *screenshotregion[]   = { "gscreenshot-cli", "--clip", "--notify", "--filename", "$(xdg-data-dir PICTURES)/Screenshots/$(date + '%Y%m%d%H%M%s'.png)", "--selection",  NULL };
+// Screenshot
+static const char *screenshotfull[]     = { "screenshot",           NULL };
+static const char *screenshotregion[]   = { "screenshot", "region", NULL };
+
+// // Screenshot
+// static const char *screenshotfull[]     = { "gscreenshot-cli", "--clip", "--notify", "--filename", "$(xdg-user-dir PICTURES)/Screenshots/$(date +'%Y%m%d%H%M%s'.png)",                 NULL };
+// static const char *screenshotregion[]   = { "gscreenshot-cli", "--clip", "--notify", "--filename", "$(xdg-user-dir PICTURES)/Screenshots/$(date +'%Y%m%d%H%M%s'.png)", "--selection",  NULL };
+
+// Volume
+static const char *volup[]     = { "sink", "up",           NULL };
+static const char *voldown[]   = { "sink", "down",         NULL };
+static const char *volset[]    = { "sink", "set",          NULL };
+static const char *volmute[]   = { "sink", "togglemute",   NULL };
+
+// Brightness 
+static const char *brightnessup[]   = { "backlight", "monup",   NULL };
+static const char *brightnessdown[] = { "backlight", "mondown", NULL };
+static const char *setbrightness[]  = { "backlight", "setmon",  NULL };
 
 static const Key keys[] = {
 	/* modifier                     key                        function        argument */
 	{ MODKEY,                       XK_b,                      togglebar,      {0} },
-	{ MODKEY,                       XK_j,                      focusstack,     {.i = +1 } },
-	{ MODKEY,                       XK_k,                      focusstack,     {.i = -1 } },
 	{ MODKEY,                       XK_i,                      incnmaster,     {.i = +1 } },
 	{ MODKEY,                       XK_d,                      incnmaster,     {.i = -1 } },
 	{ MODKEY,                       XK_h,                      setmfact,       {.f = -0.05} },
@@ -116,7 +132,10 @@ static const Key keys[] = {
 	TAGKEYS(                        XK_9,                                      8)
 	{ MODKEY|ShiftMask,             XK_q,                      quit,           {0} },
 
-  // Custom keybinds
+  // Navigate stack
+	{ ALTKEY,                       XK_j,                      focusstack,     {.i = +1 } },
+	{ ALTKEY,                       XK_k,                      focusstack,     {.i = -1 } },
+
 	{ MODKEY,                       XK_Return,                 spawn,          {.v = termcmd } },
 	{ MODKEY,                       XK_s,                      spawn,          {.v = spotify} },
 	{ MODKEY,                       XK_s,                      spawn,          {.v = spotify} },
@@ -127,7 +146,16 @@ static const Key keys[] = {
 	{ MODKEY|ShiftMask,             XK_3,                      spawn,          {.v = screenshotfull } },
 	{ MODKEY|ShiftMask,             XK_4,                      spawn,          {.v = screenshotregion } },
 
+  // Volume
+	{ 0,                            XF86XK_AudioRaiseVolume,   spawn,          {.v = volup } },
+	{ 0,                            XF86XK_AudioLowerVolume,   spawn,          {.v = voldown } },
+	{ 0,                            XF86XK_AudioMute,          spawn,          {.v = volmute } },
+	{ MODKEY,                       XK_q,                      spawn,          {.v = volset } },
 
+  // Brightness
+	{ 0,                            XF86XK_MonBrightnessUp,    spawn,          {.v = brightnessup } },
+	{ 0,                            XF86XK_MonBrightnessDown,  spawn,          {.v = brightnessdown } },
+	{ MODKEY,                       XK_w,                      spawn,          {.v = setbrightness } },
 };
 
 /* button definitions */
